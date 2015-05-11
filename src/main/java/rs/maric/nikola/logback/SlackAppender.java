@@ -5,6 +5,8 @@ import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.LayoutBase;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
@@ -39,9 +41,9 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
             final StringWriter w = new StringWriter();
             w.append("token=").append(token).append("&");
-            w.append("text=").append(URLEncoder.encode(layout.doLayout(evt), "UTF-8"));
+            w.append("text=").append(URLEncoder.encode(layout.doLayout(evt), "UTF-8")).append('&');
             if (channel != null) {
-                w.append("channel=").append(URLEncoder.encode(channel, "UTF-8")).append("&");
+                w.append("channel=").append(URLEncoder.encode(channel, "UTF-8"));
             }
 
             final byte[] bytes = w.toString().getBytes("UTF-8");
