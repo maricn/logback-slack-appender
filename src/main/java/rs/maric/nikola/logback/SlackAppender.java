@@ -61,7 +61,7 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
             os.close();
         } catch (Exception ex) {
             ex.printStackTrace();
-            addError("Error to post log to Slack.com (" + channel + "): " + evt, ex);
+            addError("Error posting log to Slack.com (" + channel + "): " + evt, ex);
         }
     }
 

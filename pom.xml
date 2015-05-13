@@ -4,12 +4,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>rs.maric.nikola</groupId>
+    <name>Logback Slack Appender</name>
+    <description>Logback appender for sending messages to Slack chats.</description>
+    <url>https://github.com/maricn/logback-slack-appender</url>
+
+    <groupId>com.github.maricn</groupId>
     <artifactId>logback-slack-appender</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <scm>
-        <developerConnection>https://github.com/maricn/logback-slack-appender</developerConnection>
+        <developerConnection>scm:git:https://github.com/maricn/logback-slack-appender.git</developerConnection>
+        <connection>scm:git:https://github.com/maricn/logback-slack-appender.git</connection>
+        <url>https://github.com/maricn/logback-slack-appender</url>
     </scm>
 
     <developers>
