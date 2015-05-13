@@ -1,4 +1,4 @@
-package rs.maric.nikola.logback;
+package com.github.maricn.logback;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Layout;

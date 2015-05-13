@@ -10,7 +10,7 @@ Add SlackAppender configuration to logback.xml file
 	<?xml version="1.0" encoding="UTF-8" ?>
 	<configuration>
 		...
-		<appender name="SLACK" class="rs.maric.nikola.logback.SlackAppender">
+		<appender name="SLACK" class="com.github.maricn.logback.SlackAppender">
 			<!-- Slack API token -->
 			<token>1111111111-1111111-11111111-111111111</token>
 			<!-- Channel that you want to post - default is #general -->
