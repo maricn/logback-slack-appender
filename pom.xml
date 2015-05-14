@@ -33,9 +33,23 @@
         </developer>
     </developers>
 
+    <distributionManagement>
+        <repository>
+            <id>ossrh-releases-maricn</id>
+            <name>SonatypeReleases</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh-snapshots-maricn</id>
+            <name>SonatypeSnapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <logback.version>1.1.2</logback.version>
         <junit.version>4.11</junit.version>
+        <BUILD_NUMBER>1</BUILD_NUMBER>
     </properties>
 
     <dependencies>
@@ -52,26 +66,88 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <keyname>038BFBA9</keyname>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>2.5</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>jar</goal>
+                                    <goal>test-jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                         <configuration>
-                            <keyname>038BFBA9</keyname>
+                            <archive>
+                                <manifestEntries>
+                                    <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                                    <Implementation-Title>${project.description}</Implementation-Title>
+                                    <Implementation-Version>${project.version}</Implementation-Version>
+                                    <Implementation-Build>${BUILD_NUMBER}</Implementation-Build>
+                                    <Specification-Title>${project.description}</Specification-Title>
+                                    <Specification-Version>${project.version}</Specification-Version>
+                                </manifestEntries>
+                            </archive>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.4</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <includePom>true</includePom>
+                            <archive>
+                                <manifestEntries>
+                                    <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                                    <Implementation-Title>${project.description}</Implementation-Title>
+                                    <Implementation-Version>${project.version}</Implementation-Version>
+                                    <Implementation-Build>${BUILD_NUMBER}</Implementation-Build>
+                                    <Specification-Title>${project.description}</Specification-Title>
+                                    <Specification-Version>${project.version}</Specification-Version>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
