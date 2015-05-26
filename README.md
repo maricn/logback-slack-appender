@@ -1,8 +1,8 @@
-This is a simple [Logback](http://logback.qos.ch/) appender which pushes logs to Slack channel.
+This is a simple [Logback](http://logback.qos.ch/) appender which pushes logs to [Slack](https://slack.com/) channel.
 
 # How to setup
 
-Add dependency to com.github.maricn:logback-hipchat-appender:1.0.0 in your pom.xml.
+Add dependency to com.github.maricn:logback-slack-appender:1.0.0 in your pom.xml.
 
 Add SlackAppender configuration to logback.xml file
 
