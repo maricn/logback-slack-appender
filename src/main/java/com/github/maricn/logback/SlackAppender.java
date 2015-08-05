@@ -5,8 +5,6 @@ import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.LayoutBase;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
@@ -19,8 +17,7 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
     private static Layout<ILoggingEvent> defaultLayout = new LayoutBase<ILoggingEvent>() {
         public String doLayout(ILoggingEvent event) {
             StringBuffer sbuf = new StringBuffer(128);
-            sbuf.append("-- ");
-            sbuf.append("[");
+            sbuf.append("-- [");
             sbuf.append(event.getLevel());
             sbuf.append("]");
             sbuf.append(event.getLoggerName());
@@ -32,6 +29,8 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
     private String token;
     private String channel;
+    private String username;
+    private String iconEmoji;
     private Layout<ILoggingEvent> layout = defaultLayout;
 
     @Override
@@ -43,7 +42,13 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
             w.append("token=").append(token).append("&");
             w.append("text=").append(URLEncoder.encode(layout.doLayout(evt), "UTF-8")).append('&');
             if (channel != null) {
-                w.append("channel=").append(URLEncoder.encode(channel, "UTF-8"));
+                w.append("channel=").append(URLEncoder.encode(channel, "UTF-8")).append('&');
+            }
+            if (username != null) {
+                w.append("username=").append(URLEncoder.encode(username, "UTF-8")).append('&');
+            }
+            if (iconEmoji != null) {
+                w.append("icon_emoji=").append(URLEncoder.encode(iconEmoji, "UTF-8"));
             }
 
             final byte[] bytes = w.toString().getBytes("UTF-8");
@@ -79,6 +84,25 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
     public void setChannel(final String channel) {
         this.channel = channel;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getIconEmoji() {
+        return iconEmoji;
+    }
+
+    public void setIconEmoji(String iconEmojiArg) {
+        this.iconEmoji = iconEmojiArg;
+        if (iconEmoji != null && !iconEmoji.isEmpty() && iconEmoji.startsWith(":") && !iconEmoji.endsWith(":")) {
+            iconEmoji += ":";
+        }
     }
 
     public Layout<ILoggingEvent> getLayout() {
