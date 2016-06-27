@@ -33,6 +33,8 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
     private String iconEmoji;
     private Layout<ILoggingEvent> layout = defaultLayout;
 
+    private int timeout = 1000;
+
     @Override
     protected void append(final ILoggingEvent evt) {
         try {
@@ -54,6 +56,8 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
             final byte[] bytes = w.toString().getBytes("UTF-8");
 
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(timeout);
+            conn.setReadTimeout(timeout);
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setFixedLengthStreamingMode(bytes.length);
@@ -111,5 +115,13 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
     public void setLayout(final Layout<ILoggingEvent> layout) {
         this.layout = layout;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }
