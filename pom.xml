@@ -47,8 +47,9 @@
     </distributionManagement>
 
     <properties>
+		<java.version>1.7</java.version>
         <logback.version>1.1.2</logback.version>
-        <junit.version>4.11</junit.version>
+        <junit.version>4.12</junit.version>
         <BUILD_NUMBER>1</BUILD_NUMBER>
     </properties>
 
@@ -83,6 +84,15 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 

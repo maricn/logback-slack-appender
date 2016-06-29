@@ -33,7 +33,7 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
     private String iconEmoji;
     private Layout<ILoggingEvent> layout = defaultLayout;
 
-    private int timeout = 1000;
+    private int timeout = 30_000;
 
     @Override
     protected void append(final ILoggingEvent evt) {
