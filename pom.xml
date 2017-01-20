@@ -50,6 +50,7 @@
 		<java.version>1.7</java.version>
         <logback.version>1.1.2</logback.version>
         <junit.version>4.12</junit.version>
+        <jackson-databind.version>2.6.6</jackson-databind.version>
         <BUILD_NUMBER>1</BUILD_NUMBER>
     </properties>
 
@@ -61,6 +62,11 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
 
         <!-- Testing -->
         <dependency>
@@ -69,13 +75,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.6.6</version>
-        </dependency>
-
     </dependencies>
 
     <build>
