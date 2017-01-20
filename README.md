@@ -2,7 +2,7 @@ This is a simple [Logback](http://logback.qos.ch/) appender which pushes logs to
 
 # How to setup
 
-Add dependency to com.github.maricn:logback-slack-appender:1.1.0 in your pom.xml.
+Add dependency to com.github.maricn:logback-slack-appender:1.2.0 in your pom.xml.
 
 Add SlackAppender configuration to logback.xml file
 

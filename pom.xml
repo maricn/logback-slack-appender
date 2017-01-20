@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <name>Logback Slack Appender</name>
@@ -10,7 +8,7 @@
 
     <groupId>com.github.maricn</groupId>
     <artifactId>logback-slack-appender</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.1-SNAPSHOT</version>
 
     <licenses>
         <license>
@@ -24,7 +22,8 @@
         <developerConnection>scm:git:https://github.com/maricn/logback-slack-appender.git</developerConnection>
         <connection>scm:git:https://github.com/maricn/logback-slack-appender.git</connection>
         <url>https://github.com/maricn/logback-slack-appender</url>
-    </scm>
+      <tag>HEAD</tag>
+  </scm>
 
     <developers>
         <developer>
@@ -50,6 +49,7 @@
 		<java.version>1.7</java.version>
         <logback.version>1.1.2</logback.version>
         <junit.version>4.12</junit.version>
+        <jackson-databind.version>2.6.6</jackson-databind.version>
         <BUILD_NUMBER>1</BUILD_NUMBER>
     </properties>
 
@@ -61,6 +61,11 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
 
         <!-- Testing -->
         <dependency>
@@ -69,13 +74,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.6.6</version>
-        </dependency>
-
     </dependencies>
 
     <build>
