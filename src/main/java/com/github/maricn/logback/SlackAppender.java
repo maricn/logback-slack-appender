@@ -1,5 +1,7 @@
 package com.github.maricn.logback;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.LayoutBase;
@@ -10,6 +12,10 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
@@ -42,7 +48,16 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
             final StringWriter w = new StringWriter();
             w.append("token=").append(token).append("&");
-            w.append("text=").append(URLEncoder.encode(layout.doLayout(evt), "UTF-8")).append('&');
+            String[] parts = layout.doLayout(evt).split("\n", 2);
+            w.append("text=").append(URLEncoder.encode(parts[0], "UTF-8")).append('&');
+            if (parts.length > 1) {
+                // Send the lines below the first line as an attachment.
+                Map<String, String> attachment = new HashMap<>();
+                attachment.put("text", parts[1]);
+                List<Map<String, String>> attachments = Arrays.asList(attachment);
+                String json = new ObjectMapper().writeValueAsString(attachments);
+                w.append("attachments=").append(URLEncoder.encode(json, "UTF-8")).append('&');
+            }
             if (channel != null) {
                 w.append("channel=").append(URLEncoder.encode(channel, "UTF-8")).append('&');
             }
@@ -124,4 +139,5 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
     public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
+
 }
