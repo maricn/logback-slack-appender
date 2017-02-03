@@ -13,6 +13,10 @@ Add SlackAppender configuration to logback.xml file
 		<appender name="SLACK" class="com.github.maricn.logback.SlackAppender">
 			<!-- Slack API token -->
 			<token>1111111111-1111111-11111111-111111111</token>
+			<!-- Slack incoming webhook uri. Uncomment the lines below to use incoming webhook uri instead of API token. -->
+			<!--
+			<webhookUri>https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX</webhookUri>
+			-->
 			<!-- Channel that you want to post - default is #general -->
 			<channel>#api-test</channel>
 			<!-- Formatting (you can use Slack formatting - URL links, code formatting, etc.) -->
