@@ -63,7 +63,7 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         message.put("text", parts[0]);
 
         // Send the lines below the first line as an attachment.
-        if (parts.length > 1) {
+        if (parts.length > 1 && parts[1].length() > 0) {
             Map<String, String> attachment = new HashMap<>();
             attachment.put("text", parts[1]);
             message.put("attachments", Arrays.asList(attachment));
@@ -83,7 +83,7 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         requestParams.append("text=").append(URLEncoder.encode(parts[0], "UTF-8")).append('&');
 
         // Send the lines below the first line as an attachment.
-        if (parts.length > 1) {
+        if (parts.length > 1 && parts[1].length() > 0) {
             Map<String, String> attachment = new HashMap<>();
             attachment.put("text", parts[1]);
             List<Map<String, String>> attachments = Collections.singletonList(attachment);
