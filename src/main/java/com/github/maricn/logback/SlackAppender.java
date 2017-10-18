@@ -8,12 +8,12 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.LayoutBase;
@@ -35,6 +35,7 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
     private String channel;
     private String username;
     private String iconEmoji;
+    private Boolean colorCoding = false;
     private Layout<ILoggingEvent> layout = defaultLayout;
 
     private int timeout = 30_000;
@@ -42,9 +43,9 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
     @Override
     protected void append(final ILoggingEvent evt) {
         try {
-            if (webhookUri != null) {
+            if (webhookUri != null && !webhookUri.isEmpty()) {
                 sendMessageWithWebhookUri(evt);
-            } else {
+            } else if (token != null && !token.isEmpty()){
                 sendMessageWithToken(evt);
             }
         } catch (Exception ex) {
@@ -61,12 +62,15 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         message.put("username", username);
         message.put("icon_emoji", iconEmoji);
         message.put("text", parts[0]);
+        if (colorCoding) {
+            message.put("color", colorByEvent(evt));
+        }
 
         // Send the lines below the first line as an attachment.
         if (parts.length > 1 && parts[1].length() > 0) {
             Map<String, String> attachment = new HashMap<>();
             attachment.put("text", parts[1]);
-            message.put("attachments", Arrays.asList(attachment));
+            message.put("attachments", Collections.singletonList(attachment));
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -86,6 +90,10 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         if (parts.length > 1 && parts[1].length() > 0) {
             Map<String, String> attachment = new HashMap<>();
             attachment.put("text", parts[1]);
+            if (colorCoding) {
+                attachment.put("color", colorByEvent(evt));
+            }
+
             List<Map<String, String>> attachments = Collections.singletonList(attachment);
             String json = new ObjectMapper().writeValueAsString(attachments);
             requestParams.append("attachments=").append(URLEncoder.encode(json, "UTF-8")).append('&');
@@ -103,6 +111,18 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         final byte[] bytes = requestParams.toString().getBytes("UTF-8");
 
         postMessage(API_URL, "application/x-www-form-urlencoded", bytes);
+    }
+
+    private String colorByEvent(ILoggingEvent evt) {
+        if (Level.ERROR.equals(evt.getLevel())) {
+            return "danger";
+        } else if (Level.WARN.equals(evt.getLevel())) {
+            return "warning";
+        } else if (Level.INFO.equals(evt.getLevel())) {
+            return "good";
+        }
+
+        return "";
     }
 
     private void postMessage(String uri, String contentType, byte[] bytes) throws IOException {
@@ -180,4 +200,11 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         this.webhookUri = webhookUri;
     }
 
+    public Boolean getColorCoding() {
+        return colorCoding;
+    }
+
+    public void setColorCoding(Boolean colorCoding) {
+        this.colorCoding = colorCoding;
+    }
 }

@@ -27,6 +27,8 @@ Add SlackAppender configuration to logback.xml file
 			<username>${HOSTNAME}</username>
 			<!-- Emoji to be used for messages -->
 			<iconEmoji>:stuck_out_tongue_winking_eye:</iconEmoji>
+			<!-- If color coding of log levels should be used -->
+			<colorCoding>true</colorCoding>
 		</appender>
 
 		<!-- Currently recommended way of using Slack appender -->
