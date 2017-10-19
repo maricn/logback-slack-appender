@@ -45,7 +45,7 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         try {
             if (webhookUri != null && !webhookUri.isEmpty()) {
                 sendMessageWithWebhookUri(evt);
-            } else if (token != null && !token.isEmpty()){
+            } else if (token != null && !token.isEmpty()) {
                 sendMessageWithToken(evt);
             }
         } catch (Exception ex) {
@@ -62,14 +62,15 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         message.put("username", username);
         message.put("icon_emoji", iconEmoji);
         message.put("text", parts[0]);
-        if (colorCoding) {
-            message.put("color", colorByEvent(evt));
-        }
 
         // Send the lines below the first line as an attachment.
         if (parts.length > 1 && parts[1].length() > 0) {
             Map<String, String> attachment = new HashMap<>();
             attachment.put("text", parts[1]);
+            if (colorCoding) {
+                attachment.put("color", colorByEvent(evt));
+            }
+
             message.put("attachments", Collections.singletonList(attachment));
         }
 
