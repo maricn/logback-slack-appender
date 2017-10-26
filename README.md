@@ -2,7 +2,7 @@ This is a simple [Logback](http://logback.qos.ch/) appender which pushes logs to
 
 # How to setup
 
-Add dependency to com.github.maricn:logback-slack-appender:1.2.0 in your pom.xml.
+Add dependency to com.github.maricn:logback-slack-appender:1.3.0 in your pom.xml.
 
 Add SlackAppender configuration to logback.xml file
 
@@ -27,6 +27,8 @@ Add SlackAppender configuration to logback.xml file
 			<username>${HOSTNAME}</username>
 			<!-- Emoji to be used for messages -->
 			<iconEmoji>:stuck_out_tongue_winking_eye:</iconEmoji>
+			<!-- If color coding of log levels should be used -->
+			<colorCoding>true</colorCoding>
 		</appender>
 
 		<!-- Currently recommended way of using Slack appender -->
