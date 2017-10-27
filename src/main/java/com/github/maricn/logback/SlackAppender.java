@@ -35,6 +35,7 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
     private String channel;
     private String username;
     private String iconEmoji;
+    private String iconUrl;
     private Boolean colorCoding = false;
     private Layout<ILoggingEvent> layout = defaultLayout;
 
@@ -61,6 +62,7 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         message.put("channel", channel);
         message.put("username", username);
         message.put("icon_emoji", iconEmoji);
+        message.put("icon_url", iconUrl);
         message.put("text", parts[0]);
 
         // Send the lines below the first line as an attachment.
@@ -108,7 +110,10 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         if (iconEmoji != null) {
             requestParams.append("icon_emoji=").append(URLEncoder.encode(iconEmoji, "UTF-8"));
         }
-
+        if (iconUrl != null) {
+            requestParams.append("icon_url=").append(URLEncoder.encode(iconUrl, "UTF-8"));
+        }
+        
         final byte[] bytes = requestParams.toString().getBytes("UTF-8");
 
         postMessage(API_URL, "application/x-www-form-urlencoded", bytes);
@@ -175,6 +180,14 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         if (iconEmoji != null && !iconEmoji.isEmpty() && iconEmoji.startsWith(":") && !iconEmoji.endsWith(":")) {
             iconEmoji += ":";
         }
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrlArg) {
+        this.iconUrl = iconUrlArg;
     }
 
     public Layout<ILoggingEvent> getLayout() {
