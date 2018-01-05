@@ -22,13 +22,15 @@ import ch.qos.logback.core.UnsynchronizedAppenderBase;
 public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
     private final static String API_URL = "https://slack.com/api/chat.postMessage";
-    private static Layout<ILoggingEvent> defaultLayout = new LayoutBase<ILoggingEvent>() {
+    private final static Layout<ILoggingEvent> defaultLayout = new LayoutBase<ILoggingEvent>() {
         public String doLayout(ILoggingEvent event) {
             return "-- [" + event.getLevel() + "]" +
                     event.getLoggerName() + " - " +
                     event.getFormattedMessage().replaceAll("\n", "\n\t");
         }
     };
+
+    private final HttpURLConnectionReader httpURLConnectionReader = new HttpURLConnectionReader();
 
     private String webhookUri;
     private String token;
@@ -113,7 +115,7 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         if (iconUrl != null) {
             requestParams.append("icon_url=").append(URLEncoder.encode(iconUrl, "UTF-8"));
         }
-        
+
         final byte[] bytes = requestParams.toString().getBytes("UTF-8");
 
         postMessage(API_URL, "application/x-www-form-urlencoded", bytes);
@@ -139,12 +141,21 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         conn.setRequestMethod("POST");
         conn.setFixedLengthStreamingMode(bytes.length);
         conn.setRequestProperty("Content-Type", contentType);
+        conn.setInstanceFollowRedirects(false);
 
-        final OutputStream os = conn.getOutputStream();
-        os.write(bytes);
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(bytes);
+            os.flush();
+        }
 
-        os.flush();
-        os.close();
+        // Read Slack response. This is necessary for Slack to accept the message. When a message
+        // is logged immediately before the JVM exits, Slack will fail to send the "OK" response
+        // (because the client closed the connection) and thus will discard the received message.
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 200) {
+            final String content = httpURLConnectionReader.readErrorBody(conn);
+            addError("Slack POST request failed: " + responseCode + " " + content);
+        }
     }
 
     public String getToken() {
