@@ -46,3 +46,33 @@ Add SlackAppender configuration to logback.xml file
 
 	</configuration>
 ```
+
+Example of SlackAppender configuration to logback.groovy file (filtering by marker):
+
+```
+import com.github.maricn.logback.SlackAppender
+import ch.qos.logback.core.filter.EvaluatorFilter
+import ch.qos.logback.classic.AsyncAppender
+import ch.qos.logback.classic.boolex.OnMarkerEvaluator
+
+appender('SLACK', SlackAppender) {
+  channel = "#api-test"
+  username = "${HOSTNAME}"
+  colorCoding = "true"
+  webhookUri = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+  layout(PatternLayout) {
+    pattern = "%-4relative [%thread] %-5level %class - %msg%n"
+  }
+  filter(EvaluatorFilter) {
+    evaluator(OnMarkerEvaluator) {
+      marker = "SLACK_MARKER"
+    }
+    onMismatch = DENY
+    onMatch = NEUTRAL
+  }
+}
+
+appender('ASYNC_SLACK', AsyncAppender) {
+  appenderRef("SLACK")
+}
+```
