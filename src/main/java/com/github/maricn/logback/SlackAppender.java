@@ -22,6 +22,7 @@ import ch.qos.logback.core.UnsynchronizedAppenderBase;
 public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
     private final static String API_URL = "https://slack.com/api/chat.postMessage";
+    private final static ObjectMapper objectMapper = new ObjectMapper();
     private static Layout<ILoggingEvent> defaultLayout = new LayoutBase<ILoggingEvent>() {
         public String doLayout(ILoggingEvent event) {
             return "-- [" + event.getLevel() + "]" +
@@ -76,7 +77,6 @@ public class SlackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
             message.put("attachments", Collections.singletonList(attachment));
         }
 
-        ObjectMapper objectMapper = new ObjectMapper();
         final byte[] bytes = objectMapper.writeValueAsBytes(message);
 
         postMessage(webhookUri, "application/json", bytes);
