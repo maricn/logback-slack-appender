@@ -9,7 +9,7 @@
 
     <groupId>com.github.maricn</groupId>
     <artifactId>logback-slack-appender</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <version>1.6.1</version>
 
     <licenses>
         <license>
@@ -82,20 +82,13 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
+                <version>1.6.3</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh-snapshots-maricn</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
-                <dependencies>
-                  <dependency>
-                    <groupId>com.thoughtworks.xstream</groupId>
-                    <artifactId>xstream</artifactId>
-                    <version>1.4.15</version> <!-- fixes bug with using 1.6.8 for releases -->
-                  </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
