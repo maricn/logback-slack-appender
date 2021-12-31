@@ -125,7 +125,7 @@
                                     <goal>sign</goal>
                                 </goals>
                                 <configuration>
-                                    <keyname>038BFBA9</keyname>
+                                    <keyname>08FCB3B4</keyname>
                                 </configuration>
                             </execution>
                         </executions>
