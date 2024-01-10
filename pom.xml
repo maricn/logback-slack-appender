@@ -9,7 +9,7 @@
 
     <groupId>com.github.maricn</groupId>
     <artifactId>logback-slack-appender</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <version>1.6.2-SNAPSHOT</version>
 
     <licenses>
         <license>
@@ -29,7 +29,6 @@
     <developers>
         <developer>
             <name>Nikola Marić</name>
-            <email>nikola@maricn.me</email>
         </developer>
     </developers>
 
