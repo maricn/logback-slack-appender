@@ -1,7 +1,10 @@
 # Logback Slack appender
 
+## STATUS UPDATE 2024-02-18
+Check out https://github.com/cyfrania/logback-slack-appender for up-to-date version (https://github.com/maricn/logback-slack-appender/issues/38).
+
 ### UNMANTAINED
-I don't have time to take care and maintain this project. I don't use logback on any of my projects anymore. If anyone wants to have their fork linked from here, or to take over this repo, drop an issue. Thanks for your support so far!
+I don't have time to take care and maintain this project anymore as I don't use logback on any of my projects. If anyone wants to have their fork linked from here, or to take over this repo, drop an issue. Take a look at a newer fork https://github.com/cyfrania/logback-slack-appender. Thanks for your support so far!
 
 This is a simple [Logback](http://logback.qos.ch/) appender which pushes logs to [Slack](https://slack.com/) channel.
 
